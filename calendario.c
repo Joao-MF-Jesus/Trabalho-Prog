@@ -147,5 +147,38 @@ void inserirAgendamentos(int ano, int calendario_agendamentos[], int bissexto) {
 }
 
 void mostrarCalendarioAgendamentos(int ano, int calendario_agendamentos[], int dias_fevereiro, int dia_semana_inicio) {
+    int dias_mes[MESES] = {31, dias_fevereiro, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    char *nomes_meses[MESES] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
 
+    printf("*** CALENDÁRIO ***\n");
+
+    int ultimo_dia_mes_anterior = 0;
+
+    for (int mes = 0; mes < MESES; mes++) {
+        printf("\n%s\n", nomes_meses[mes]);
+        printf("Dom Seg Ter Qua Qui Sex Sab\n");
+
+        // Espaços iniciais para ajustar o dia da semana em que o mês começa
+        for (int i = 0; i < dia_semana_inicio; i++) {
+            printf("    ");
+        }
+
+        // Preenchimento dos dias do mês
+        for (int dia = 1; dia <= dias_mes[mes]; dia++) {
+            int quantidade_agendamentos_dia_atual = calendario_agendamentos[(dia + ultimo_dia_mes_anterior) - 1];
+            printf("%3d ", quantidade_agendamentos_dia_atual);
+
+            // Nova linha para o próximo dia da semana
+            if ((dia + dia_semana_inicio) % DIAS_SEMANA == 0 || dia == dias_mes[mes]) {
+                printf("\n");
+            }
+
+            if (dia == dias_mes[mes]) {
+                ultimo_dia_mes_anterior += dia;
+            }
+        }
+
+        // Atualizar o dia da semana para o próximo mês
+        dia_semana_inicio = (dia_semana_inicio + dias_mes[mes]) % DIAS_SEMANA;
+    }
 }
